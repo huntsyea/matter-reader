@@ -41,93 +41,141 @@ serve(async (req) => {
     const imageUrl = doc.querySelector('meta[property="og:image"]')?.getAttribute('content') || 
                     null
 
-    // Find the main content container
-    const articleElement = doc.querySelector('article') || 
-                         doc.querySelector('.article-content') || 
-                         doc.querySelector('.post-content') ||
-                         doc.querySelector('main')
+    // Enhanced content extraction
+    const possibleContentSelectors = [
+      'article',
+      '[role="article"]',
+      '.article-content',
+      '.post-content',
+      '.entry-content',
+      '.content',
+      'main',
+      '.main',
+      '#main-content',
+      '.blog-post',
+      '.post',
+      '.article',
+      '.story-content'
+    ];
 
-    let content = ''
-    if (articleElement) {
+    let mainContent = null;
+    for (const selector of possibleContentSelectors) {
+      const element = doc.querySelector(selector);
+      if (element && element.textContent.trim().length > 100) {
+        mainContent = element;
+        break;
+      }
+    }
+
+    // If no main content container found, try to find the largest text container
+    if (!mainContent) {
+      console.log('No main content found with selectors, searching for largest text container');
+      const allElements = doc.querySelectorAll('div, section, main');
+      let maxTextLength = 0;
+      
+      allElements.forEach(element => {
+        const textLength = element.textContent.trim().length;
+        if (textLength > maxTextLength && textLength > 500) {
+          maxTextLength = textLength;
+          mainContent = element;
+        }
+      });
+    }
+
+    let content = '';
+    if (mainContent) {
+      console.log('Found main content container');
+      
       // Remove unwanted elements
-      articleElement.querySelectorAll('script, style, iframe, nav, header, footer, .advertisement, .social-share, .comments').forEach(el => el.remove())
+      const unwantedSelectors = [
+        'script', 'style', 'iframe', 'nav', 'header', 'footer',
+        '.advertisement', '.social-share', '.comments', '.sidebar',
+        '.nav', '.menu', '.footer', '.header', '.ad', '.share',
+        '.related-posts', '.newsletter', '.subscription'
+      ];
+      
+      unwantedSelectors.forEach(selector => {
+        mainContent.querySelectorAll(selector).forEach(el => el.remove());
+      });
       
       // Process remaining content
       const processNode = (node) => {
         if (node.nodeType === 3) { // Text node
-          return node.textContent
+          return node.textContent;
         }
         
         // Common blog elements to preserve
         const preservedElements = [
-          // Text formatting
           'P', 'STRONG', 'EM', 'B', 'I', 'U', 'MARK', 'SUP', 'SUB', 'SMALL', 'DEL', 'INS',
-          // Headers
           'H1', 'H2', 'H3', 'H4', 'H5', 'H6',
-          // Lists
           'UL', 'OL', 'LI', 'DL', 'DT', 'DD',
-          // Tables
           'TABLE', 'THEAD', 'TBODY', 'TR', 'TH', 'TD',
-          // Code
           'CODE', 'PRE', 'KBD', 'SAMP',
-          // Quotes and citations
           'BLOCKQUOTE', 'Q', 'CITE',
-          // Media and figures
           'IMG', 'FIGURE', 'FIGCAPTION',
-          // Other structural elements
           'DIV', 'SPAN', 'HR', 'BR',
-          // Definition and details
           'DFN', 'ABBR', 'DETAILS', 'SUMMARY',
-          // Links and references
           'A'
-        ]
+        ];
         
         if (node.tagName === 'A') {
-          const href = node.getAttribute('href')
+          const href = node.getAttribute('href');
           if (href) {
-            const absoluteUrl = new URL(href, url).href
-            const innerContent = Array.from(node.childNodes)
-              .map(child => processNode(child))
-              .join('')
-            return `<a href="${absoluteUrl}" target="_blank" rel="noopener noreferrer">${innerContent}</a>`
+            try {
+              const absoluteUrl = new URL(href, url).href;
+              const innerContent = Array.from(node.childNodes)
+                .map(child => processNode(child))
+                .join('');
+              return `<a href="${absoluteUrl}" target="_blank" rel="noopener noreferrer">${innerContent}</a>`;
+            } catch (e) {
+              console.log('Error processing link:', e);
+              return '';
+            }
           }
-          return ''
+          return '';
         }
 
         if (node.tagName === 'IMG') {
-          const src = node.getAttribute('src')
+          const src = node.getAttribute('src');
           if (src) {
-            const absoluteUrl = new URL(src, url).href
-            const alt = node.getAttribute('alt') || ''
-            const title = node.getAttribute('title') || ''
-            return `<img src="${absoluteUrl}" alt="${alt}" title="${title}" loading="lazy" />`
+            try {
+              const absoluteUrl = new URL(src, url).href;
+              const alt = node.getAttribute('alt') || '';
+              const title = node.getAttribute('title') || '';
+              return `<img src="${absoluteUrl}" alt="${alt}" title="${title}" loading="lazy" />`;
+            } catch (e) {
+              console.log('Error processing image:', e);
+              return '';
+            }
           }
-          return ''
+          return '';
         }
 
         if (preservedElements.includes(node.tagName)) {
           const innerContent = Array.from(node.childNodes)
             .map(child => processNode(child))
-            .join('')
+            .join('');
           
-          // Preserve class names and other relevant attributes
           const attrs = Array.from(node.attributes || [])
             .filter(attr => ['class', 'id', 'lang', 'dir'].includes(attr.name))
             .map(attr => `${attr.name}="${attr.value}"`)
-            .join(' ')
+            .join(' ');
           
-          const attrString = attrs ? ` ${attrs}` : ''
+          const attrString = attrs ? ` ${attrs}` : '';
           
-          return `<${node.tagName.toLowerCase()}${attrString}>${innerContent}</${node.tagName.toLowerCase()}>`
+          return `<${node.tagName.toLowerCase()}${attrString}>${innerContent}</${node.tagName.toLowerCase()}>`;
         }
 
         // For other elements, just process their children
         return Array.from(node.childNodes)
           .map(child => processNode(child))
-          .join('')
-      }
+          .join('');
+      };
 
-      content = processNode(articleElement)
+      content = processNode(mainContent);
+      console.log('Successfully processed content, length:', content.length);
+    } else {
+      console.log('No suitable content container found');
     }
 
     const parsedData = {
@@ -137,9 +185,9 @@ serve(async (req) => {
       publishedDate,
       source,
       imageUrl
-    }
+    };
 
-    console.log('Successfully parsed article with enhanced element support')
+    console.log('Successfully parsed article with content length:', content.length);
 
     return new Response(
       JSON.stringify(parsedData),
@@ -149,10 +197,10 @@ serve(async (req) => {
           'Content-Type': 'application/json',
         },
       },
-    )
+    );
 
   } catch (error) {
-    console.error('Error parsing article:', error)
+    console.error('Error parsing article:', error);
     return new Response(
       JSON.stringify({ error: error.message }),
       { 
@@ -162,6 +210,6 @@ serve(async (req) => {
           'Content-Type': 'application/json',
         },
       },
-    )
+    );
   }
-})
+});
