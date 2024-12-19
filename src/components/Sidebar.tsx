@@ -1,4 +1,4 @@
-import { Home, InboxIcon, Search, Star, Highlighter, Archive, Tag, BookMarked } from "lucide-react";
+import { Home, InboxIcon, Search, Star, Highlighter, Archive, Tag, BookMarked, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { 
   Sidebar as ShadcnSidebar,
@@ -7,8 +7,17 @@ import {
   SidebarFooter,
   SidebarRail
 } from "@/components/ui/sidebar";
+import { supabase } from "@/integrations/supabase/client";
+import { useNavigate } from "react-router-dom";
 
 export const Sidebar = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate("/auth");
+  };
+
   return (
     <>
       <ShadcnSidebar className="border-r">
@@ -67,12 +76,22 @@ export const Sidebar = () => {
         </SidebarContent>
 
         <SidebarFooter className="border-t p-4">
-          <div className="bg-accent/50 rounded-lg p-4">
-            <h3 className="font-semibold mb-2">Get your reading superpowers</h3>
-            <p className="text-sm text-muted-foreground mb-4">Read better with Matter Premium</p>
-            <Button variant="outline" className="w-full">
-              Go Premium →
+          <div className="space-y-4">
+            <Button 
+              variant="ghost" 
+              className="justify-start gap-2 w-full text-destructive hover:text-destructive"
+              onClick={handleLogout}
+            >
+              <LogOut className="h-4 w-4" />
+              <span>Log out</span>
             </Button>
+            <div className="bg-accent/50 rounded-lg p-4">
+              <h3 className="font-semibold mb-2">Get your reading superpowers</h3>
+              <p className="text-sm text-muted-foreground mb-4">Read better with Matter Premium</p>
+              <Button variant="outline" className="w-full">
+                Go Premium →
+              </Button>
+            </div>
           </div>
         </SidebarFooter>
       </ShadcnSidebar>
