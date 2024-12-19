@@ -58,10 +58,33 @@ serve(async (req) => {
           return node.textContent
         }
         
+        // Common blog elements to preserve
+        const preservedElements = [
+          // Text formatting
+          'P', 'STRONG', 'EM', 'B', 'I', 'U', 'MARK', 'SUP', 'SUB', 'SMALL', 'DEL', 'INS',
+          // Headers
+          'H1', 'H2', 'H3', 'H4', 'H5', 'H6',
+          // Lists
+          'UL', 'OL', 'LI', 'DL', 'DT', 'DD',
+          // Tables
+          'TABLE', 'THEAD', 'TBODY', 'TR', 'TH', 'TD',
+          // Code
+          'CODE', 'PRE', 'KBD', 'SAMP',
+          // Quotes and citations
+          'BLOCKQUOTE', 'Q', 'CITE',
+          // Media and figures
+          'IMG', 'FIGURE', 'FIGCAPTION',
+          // Other structural elements
+          'DIV', 'SPAN', 'HR', 'BR',
+          // Definition and details
+          'DFN', 'ABBR', 'DETAILS', 'SUMMARY',
+          // Links and references
+          'A'
+        ]
+        
         if (node.tagName === 'A') {
           const href = node.getAttribute('href')
           if (href) {
-            // Convert relative URLs to absolute
             const absoluteUrl = new URL(href, url).href
             const innerContent = Array.from(node.childNodes)
               .map(child => processNode(child))
@@ -74,26 +97,28 @@ serve(async (req) => {
         if (node.tagName === 'IMG') {
           const src = node.getAttribute('src')
           if (src) {
-            // Convert relative URLs to absolute
             const absoluteUrl = new URL(src, url).href
-            return `<img src="${absoluteUrl}" alt="${node.getAttribute('alt') || ''}" loading="lazy" />`
+            const alt = node.getAttribute('alt') || ''
+            const title = node.getAttribute('title') || ''
+            return `<img src="${absoluteUrl}" alt="${alt}" title="${title}" loading="lazy" />`
           }
           return ''
         }
 
-        // Preserve all common HTML elements
-        if (['P', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'BLOCKQUOTE', 
-             'UL', 'OL', 'LI', 'STRONG', 'EM', 'B', 'I', 'CODE', 
-             'PRE', 'HR', 'BR', 'DIV', 'SPAN', 'FIGURE', 'FIGCAPTION'].includes(node.tagName)) {
+        if (preservedElements.includes(node.tagName)) {
           const innerContent = Array.from(node.childNodes)
             .map(child => processNode(child))
             .join('')
           
-          // Preserve class names for certain elements
-          const classAttr = node.getAttribute('class')
-          const classString = classAttr ? ` class="${classAttr}"` : ''
+          // Preserve class names and other relevant attributes
+          const attrs = Array.from(node.attributes || [])
+            .filter(attr => ['class', 'id', 'lang', 'dir'].includes(attr.name))
+            .map(attr => `${attr.name}="${attr.value}"`)
+            .join(' ')
           
-          return `<${node.tagName.toLowerCase()}${classString}>${innerContent}</${node.tagName.toLowerCase()}>`
+          const attrString = attrs ? ` ${attrs}` : ''
+          
+          return `<${node.tagName.toLowerCase()}${attrString}>${innerContent}</${node.tagName.toLowerCase()}>`
         }
 
         // For other elements, just process their children
@@ -114,7 +139,7 @@ serve(async (req) => {
       imageUrl
     }
 
-    console.log('Successfully parsed article:', parsedData)
+    console.log('Successfully parsed article with enhanced element support')
 
     return new Response(
       JSON.stringify(parsedData),
