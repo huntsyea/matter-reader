@@ -29,13 +29,13 @@ const AuthPage = () => {
   }, [navigate]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background p-4">
-      <div className="w-full max-w-md space-y-4">
+    <div className="min-h-screen w-full flex items-center justify-center bg-background">
+      <div className="w-full max-w-md p-6 space-y-6">
         <div className="text-center space-y-2">
-          <h1 className="text-2xl font-bold">Welcome to Reader</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Welcome to Reader</h1>
           <p className="text-muted-foreground">Sign in to access your reading list</p>
         </div>
-        <div className="border rounded-lg p-4 bg-card">
+        <div className="border rounded-lg p-6 bg-card shadow-sm">
           <Auth
             supabaseClient={supabase}
             appearance={{
