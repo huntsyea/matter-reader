@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
+import { DOMParser } from "https://deno.land/x/deno_dom@v0.1.38/deno-dom-wasm.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -20,9 +21,11 @@ serve(async (req) => {
     const html = await response.text()
     console.log('Fetched HTML content')
 
-    // Parse the HTML using DOMParser
-    const parser = new DOMParser()
-    const doc = parser.parseFromString(html, 'text/html')
+    // Parse the HTML using Deno DOM
+    const doc = new DOMParser().parseFromString(html, 'text/html')
+    if (!doc) {
+      throw new Error('Failed to parse HTML')
+    }
 
     // Extract metadata
     const title = doc.querySelector('meta[property="og:title"]')?.getAttribute('content') || 
@@ -49,11 +52,8 @@ serve(async (req) => {
 
     let content = ''
     if (articleElement) {
-      // Remove script tags and other unwanted elements
-      const scripts = articleElement.getElementsByTagName('script')
-      for (const script of scripts) {
-        script.remove()
-      }
+      // Remove script tags
+      articleElement.querySelectorAll('script').forEach(script => script.remove())
       content = articleElement.textContent?.trim() || ''
     }
 
