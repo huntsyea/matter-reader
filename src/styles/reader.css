@@ -112,4 +112,5 @@
   font-weight: 600;
   color: hsl(var(--reader-text));
   letter-spacing: -0.01em;
+  display: inline;
 }
