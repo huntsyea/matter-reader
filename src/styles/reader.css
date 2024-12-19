@@ -1,23 +1,22 @@
 .article-content {
   font-family: 'Newsreader', serif;
   font-weight: 400;
-  font-feature-settings: "liga" 1, "kern" 1, "onum" 1;
+  font-feature-settings: "liga" 1, "kern" 1;
   letter-spacing: -0.003em;
-  word-spacing: 0.05em;
 }
 
 .article-content p {
   hanging-punctuation: first;
-  line-height: 1.75;
-  margin-bottom: 1.8rem;
-  max-width: 70ch;
+  line-height: 1.8;
+  margin-bottom: 2rem;
+  max-width: 65ch;
   margin-left: auto;
   margin-right: auto;
 }
 
 .article-content img {
   display: block;
-  margin: 2.5rem auto;
+  margin: 2rem auto;
   max-width: 100%;
   height: auto;
   border-radius: 0.5rem;
@@ -29,16 +28,14 @@
   border-radius: 0.5rem;
   overflow-x: auto;
   font-size: 0.95em;
-  line-height: 1.6;
 }
 
 .article-content blockquote {
   font-style: italic;
-  margin: 2.5rem 0;
+  margin: 2rem 0;
   padding-left: 1.5rem;
   border-left-width: 4px;
-  font-size: 1.1em;
-  line-height: 1.7;
+  line-height: 1.8;
 }
 
 .article-content h1 {
@@ -81,28 +78,26 @@
 }
 
 .article-content hr {
-  margin: 3rem 0;
-  width: 40%;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 3rem auto;
+  width: 30%;
 }
 
 .article-content ul {
   list-style-type: disc;
   margin-left: 1.5rem;
-  margin-bottom: 1.8rem;
-  line-height: 1.7;
+  margin-bottom: 1.5rem;
+  line-height: 1.8;
 }
 
 .article-content ol {
   list-style-type: decimal;
   margin-left: 1.5rem;
-  margin-bottom: 1.8rem;
-  line-height: 1.7;
+  margin-bottom: 1.5rem;
+  line-height: 1.8;
 }
 
 .article-content li {
-  margin-bottom: 0.7rem;
+  margin-bottom: 0.5rem;
   padding-left: 0.5rem;
 }
 
@@ -127,16 +122,13 @@
   font-weight: 600;
   color: hsl(var(--reader-text));
   letter-spacing: -0.01em;
-  display: inline;
-  font-size: 1.05em;
 }
 
 .article-content figcaption {
   font-size: 0.875rem;
   color: hsl(var(--muted-foreground));
   text-align: center;
-  margin-top: -1rem;
-  font-style: italic;
+  margin-top: 0.5rem;
 }
 
 .article-content kbd {
@@ -144,13 +136,6 @@
   padding: 0.2em 0.4em;
   border-radius: 0.25rem;
   font-family: 'Courier New', Courier, monospace;
-  font-size: 0.9em;
-}
-
-/* Add styles for better text selection visibility */
-.article-content ::selection {
-  background: rgba(var(--primary), 0.1);
-  color: hsl(var(--reader-text));
 }
 
 /* Improve table readability */
@@ -158,7 +143,6 @@
   width: 100%;
   border-collapse: collapse;
   margin: 2rem 0;
-  font-size: 0.95em;
 }
 
 .article-content th,
@@ -173,7 +157,7 @@
   font-weight: 600;
 }
 
-/* Add styles for definition lists if used in content */
+/* Add styles for definition lists */
 .article-content dl {
   margin: 2rem 0;
 }
@@ -186,5 +170,5 @@
 .article-content dd {
   margin-left: 2rem;
   margin-bottom: 1rem;
-  line-height: 1.7;
+  line-height: 1.8;
 }
