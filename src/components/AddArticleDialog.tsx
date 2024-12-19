@@ -17,6 +17,13 @@ export const AddArticleDialog = () => {
     setIsLoading(true);
 
     try {
+      // Get the current user
+      const { data: { user }, error: userError } = await supabase.auth.getUser();
+      
+      if (userError || !user) {
+        throw new Error("You must be logged in to add articles");
+      }
+
       console.log("Submitting article URL:", url);
       
       // Call the parse-article edge function
@@ -31,7 +38,7 @@ export const AddArticleDialog = () => {
       // Insert the article into the database
       const { error: insertError } = await supabase
         .from('articles')
-        .insert([{
+        .insert({
           url,
           title: parsedArticle.title,
           content: parsedArticle.content,
@@ -39,7 +46,8 @@ export const AddArticleDialog = () => {
           published_date: parsedArticle.publishedDate,
           source: parsedArticle.source,
           image_url: parsedArticle.imageUrl,
-        }]);
+          user_id: user.id // Add the user_id field
+        });
 
       if (insertError) throw insertError;
 
@@ -54,7 +62,7 @@ export const AddArticleDialog = () => {
       console.error("Error adding article:", error);
       toast({
         title: "Error adding article",
-        description: "There was an error adding your article. Please try again.",
+        description: error instanceof Error ? error.message : "There was an error adding your article. Please try again.",
         variant: "destructive",
       });
     } finally {
