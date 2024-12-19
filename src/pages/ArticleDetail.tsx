@@ -100,9 +100,11 @@ const ArticleDetail = () => {
               </h1>
               <div className="flex flex-wrap items-center gap-x-3 text-sm sm:text-base text-zinc-200">
                 {article?.author && <span>{article.author}</span>}
-                {article?.source && <span>• {article.source}</span>}
+                {article?.author && article?.source && <span>•</span>}
+                {article?.source && <span>{article.source}</span>}
+                {((article?.author || article?.source) && article?.published_date) && <span>•</span>}
                 {article?.published_date && (
-                  <span>• {new Date(article.published_date).toLocaleDateString()}</span>
+                  <span>{new Date(article.published_date).toLocaleDateString()}</span>
                 )}
               </div>
             </div>

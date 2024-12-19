@@ -38,9 +38,9 @@ export const ArticleCard = ({ id, title, source, author, date, imageUrl, type }:
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-1">
           {author && <span>{author}</span>}
           {author && source && <span className="hidden sm:inline">•</span>}
-          <span>{source}</span>
-          <span className="hidden sm:inline">•</span>
-          <span>{date}</span>
+          {source && <span>{source}</span>}
+          {((author || source) && date) && <span className="hidden sm:inline">•</span>}
+          {date && <span>{date}</span>}
         </div>
       </div>
     </div>
