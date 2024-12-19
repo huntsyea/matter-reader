@@ -35,7 +35,7 @@ const MOCK_ARTICLES = [
 
 export const ArticleList = () => {
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <div className="w-full max-w-4xl mx-auto px-4 sm:px-6">
       {MOCK_ARTICLES.map((article, index) => (
         <ArticleCard key={index} {...article} />
       ))}
