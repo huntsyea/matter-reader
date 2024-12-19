@@ -58,24 +58,42 @@ serve(async (req) => {
           return node.textContent
         }
         
+        if (node.tagName === 'A') {
+          const href = node.getAttribute('href')
+          if (href) {
+            // Convert relative URLs to absolute
+            const absoluteUrl = new URL(href, url).href
+            const innerContent = Array.from(node.childNodes)
+              .map(child => processNode(child))
+              .join('')
+            return `<a href="${absoluteUrl}" target="_blank" rel="noopener noreferrer">${innerContent}</a>`
+          }
+          return ''
+        }
+
         if (node.tagName === 'IMG') {
           const src = node.getAttribute('src')
           if (src) {
             // Convert relative URLs to absolute
             const absoluteUrl = new URL(src, url).href
-            return `<img src="${absoluteUrl}" alt="${node.getAttribute('alt') || ''}" />`
+            return `<img src="${absoluteUrl}" alt="${node.getAttribute('alt') || ''}" loading="lazy" />`
           }
           return ''
         }
 
-        if (node.tagName === 'P' || node.tagName === 'H1' || node.tagName === 'H2' || 
-            node.tagName === 'H3' || node.tagName === 'H4' || node.tagName === 'H5' || 
-            node.tagName === 'H6' || node.tagName === 'BLOCKQUOTE' || 
-            node.tagName === 'UL' || node.tagName === 'OL' || node.tagName === 'LI') {
+        // Preserve all common HTML elements
+        if (['P', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'BLOCKQUOTE', 
+             'UL', 'OL', 'LI', 'STRONG', 'EM', 'B', 'I', 'CODE', 
+             'PRE', 'HR', 'BR', 'DIV', 'SPAN', 'FIGURE', 'FIGCAPTION'].includes(node.tagName)) {
           const innerContent = Array.from(node.childNodes)
             .map(child => processNode(child))
             .join('')
-          return `<${node.tagName.toLowerCase()}>${innerContent}</${node.tagName.toLowerCase()}>`
+          
+          // Preserve class names for certain elements
+          const classAttr = node.getAttribute('class')
+          const classString = classAttr ? ` class="${classAttr}"` : ''
+          
+          return `<${node.tagName.toLowerCase()}${classString}>${innerContent}</${node.tagName.toLowerCase()}>`
         }
 
         // For other elements, just process their children
