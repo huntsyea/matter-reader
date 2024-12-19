@@ -67,8 +67,8 @@ const ArticleDetail = () => {
             <h1 className="text-xl font-semibold">Article</h1>
           </div>
         </div>
-        <div className="overflow-auto">
-          <article className="prose dark:prose-invert max-w-4xl mx-auto p-6">
+        <div className="overflow-auto bg-reader-background text-reader-text">
+          <article className="prose dark:prose-invert prose-img:rounded-lg prose-headings:font-serif prose-p:font-sans prose-p:text-reader-text prose-headings:text-reader-text max-w-4xl mx-auto p-6">
             {article?.image_url && (
               <img 
                 src={article.image_url} 
@@ -76,15 +76,18 @@ const ArticleDetail = () => {
                 className="w-full h-64 object-cover rounded-lg mb-6"
               />
             )}
-            <h1 className="mb-2">{article?.title}</h1>
-            <div className="flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-400 mb-6">
+            <h1 className="mb-2 font-serif">{article?.title}</h1>
+            <div className="flex items-center gap-2 text-sm text-reader-muted mb-6">
               {article?.author && <span>{article.author}</span>}
               {article?.source && <span>• {article.source}</span>}
               {article?.published_date && (
                 <span>• {new Date(article.published_date).toLocaleDateString()}</span>
               )}
             </div>
-            <div className="whitespace-pre-wrap">{article?.content}</div>
+            <div 
+              className="article-content"
+              dangerouslySetInnerHTML={{ __html: article?.content || '' }}
+            />
           </article>
         </div>
       </div>

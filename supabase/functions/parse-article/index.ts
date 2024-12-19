@@ -7,7 +7,6 @@ const corsHeaders = {
 }
 
 serve(async (req) => {
-  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
   }
@@ -16,12 +15,10 @@ serve(async (req) => {
     const { url } = await req.json()
     console.log('Parsing article from URL:', url)
 
-    // Fetch the article HTML
     const response = await fetch(url)
     const html = await response.text()
     console.log('Fetched HTML content')
 
-    // Parse the HTML using Deno DOM
     const doc = new DOMParser().parseFromString(html, 'text/html')
     if (!doc) {
       throw new Error('Failed to parse HTML')
@@ -44,7 +41,7 @@ serve(async (req) => {
     const imageUrl = doc.querySelector('meta[property="og:image"]')?.getAttribute('content') || 
                     null
 
-    // Extract main content (this is a simple implementation)
+    // Find the main content container
     const articleElement = doc.querySelector('article') || 
                          doc.querySelector('.article-content') || 
                          doc.querySelector('.post-content') ||
@@ -52,15 +49,42 @@ serve(async (req) => {
 
     let content = ''
     if (articleElement) {
-      // Remove script tags
-      articleElement.querySelectorAll('script').forEach(script => script.remove())
-      content = articleElement.textContent?.trim() || ''
-    }
+      // Remove unwanted elements
+      articleElement.querySelectorAll('script, style, iframe, nav, header, footer, .advertisement, .social-share, .comments').forEach(el => el.remove())
+      
+      // Process remaining content
+      const processNode = (node) => {
+        if (node.nodeType === 3) { // Text node
+          return node.textContent
+        }
+        
+        if (node.tagName === 'IMG') {
+          const src = node.getAttribute('src')
+          if (src) {
+            // Convert relative URLs to absolute
+            const absoluteUrl = new URL(src, url).href
+            return `<img src="${absoluteUrl}" alt="${node.getAttribute('alt') || ''}" />`
+          }
+          return ''
+        }
 
-    // Limit content length if needed
-    const maxLength = 5000
-    if (content.length > maxLength) {
-      content = content.substring(0, maxLength) + '...'
+        if (node.tagName === 'P' || node.tagName === 'H1' || node.tagName === 'H2' || 
+            node.tagName === 'H3' || node.tagName === 'H4' || node.tagName === 'H5' || 
+            node.tagName === 'H6' || node.tagName === 'BLOCKQUOTE' || 
+            node.tagName === 'UL' || node.tagName === 'OL' || node.tagName === 'LI') {
+          const innerContent = Array.from(node.childNodes)
+            .map(child => processNode(child))
+            .join('')
+          return `<${node.tagName.toLowerCase()}>${innerContent}</${node.tagName.toLowerCase()}>`
+        }
+
+        // For other elements, just process their children
+        return Array.from(node.childNodes)
+          .map(child => processNode(child))
+          .join('')
+      }
+
+      content = processNode(articleElement)
     }
 
     const parsedData = {
