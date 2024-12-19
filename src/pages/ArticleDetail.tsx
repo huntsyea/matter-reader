@@ -28,7 +28,7 @@ const ArticleDetail = () => {
 
   if (isLoading) {
     return (
-      <div className="flex h-screen">
+      <div className="flex h-screen bg-background">
         <Sidebar />
         <div className="flex-1 flex flex-col">
           <header className="border-b">
@@ -39,8 +39,8 @@ const ArticleDetail = () => {
               <h1 className="text-xl font-semibold">Article</h1>
             </div>
           </header>
-          <main className="flex-1 overflow-y-auto">
-            <div className="animate-pulse space-y-4 p-6 max-w-4xl mx-auto">
+          <main className="flex-1 p-6">
+            <div className="max-w-4xl mx-auto w-full animate-pulse space-y-4">
               <div className="h-8 w-3/4 bg-zinc-100 dark:bg-zinc-800 rounded"></div>
               <div className="h-4 w-1/4 bg-zinc-100 dark:bg-zinc-800 rounded"></div>
               <div className="space-y-2">
@@ -56,7 +56,7 @@ const ArticleDetail = () => {
   }
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen bg-background">
       <Sidebar />
       <div className="flex-1 flex flex-col">
         <header className="border-b">
@@ -67,8 +67,8 @@ const ArticleDetail = () => {
             <h1 className="text-xl font-semibold">Article</h1>
           </div>
         </header>
-        <main className="flex-1 overflow-y-auto">
-          <article className="prose dark:prose-invert max-w-4xl mx-auto p-6">
+        <main className="flex-1 p-6 overflow-y-auto">
+          <article className="prose dark:prose-invert max-w-4xl mx-auto">
             {article?.image_url && (
               <img 
                 src={article.image_url} 
