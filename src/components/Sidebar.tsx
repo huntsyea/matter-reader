@@ -1,68 +1,82 @@
 import { Home, InboxIcon, Search, Star, Highlighter, Archive, Tag, BookMarked } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { 
+  Sidebar as ShadcnSidebar,
+  SidebarContent,
+  SidebarHeader,
+  SidebarFooter,
+  SidebarRail
+} from "@/components/ui/sidebar";
 
 export const Sidebar = () => {
   return (
-    <div className="w-64 bg-zinc-900 text-white p-4 flex flex-col min-h-screen">
-      <div className="flex items-center gap-2 mb-8">
-        <BookMarked className="h-8 w-8" />
-      </div>
-      
-      <Button variant="ghost" className="justify-start gap-2 mb-2 text-white hover:bg-zinc-800 w-full">
-        <Home className="h-4 w-4" />
-        Home
-      </Button>
-      
-      <Button variant="ghost" className="justify-start gap-2 mb-2 text-white hover:bg-zinc-800 w-full">
-        <BookMarked className="h-4 w-4" />
-        Queue
-      </Button>
-      
-      <Button variant="ghost" className="justify-start gap-2 mb-2 text-white hover:bg-zinc-800 w-full">
-        <InboxIcon className="h-4 w-4" />
-        Inbox
-      </Button>
+    <>
+      <ShadcnSidebar className="border-r">
+        <SidebarHeader className="border-b pb-4">
+          <div className="flex items-center gap-2">
+            <BookMarked className="h-8 w-8" />
+          </div>
+        </SidebarHeader>
 
-      <Button variant="ghost" className="justify-start gap-2 mb-2 text-white hover:bg-zinc-800 w-full">
-        <Search className="h-4 w-4" />
-        Search
-      </Button>
+        <SidebarContent>
+          <div className="flex flex-col gap-2 p-4">
+            <Button variant="ghost" className="justify-start gap-2 mb-2 text-foreground hover:bg-accent w-full">
+              <Home className="h-4 w-4" />
+              <span>Home</span>
+            </Button>
+            
+            <Button variant="ghost" className="justify-start gap-2 mb-2 text-foreground hover:bg-accent w-full">
+              <BookMarked className="h-4 w-4" />
+              <span>Queue</span>
+            </Button>
+            
+            <Button variant="ghost" className="justify-start gap-2 mb-2 text-foreground hover:bg-accent w-full">
+              <InboxIcon className="h-4 w-4" />
+              <span>Inbox</span>
+            </Button>
 
-      <div className="mt-8">
-        <h2 className="text-sm font-semibold mb-4 px-2 text-zinc-400">Library</h2>
-        
-        <Button variant="ghost" className="justify-start gap-2 mb-2 text-white hover:bg-zinc-800 w-full">
-          <Star className="h-4 w-4" />
-          Favorites
-        </Button>
+            <Button variant="ghost" className="justify-start gap-2 mb-2 text-foreground hover:bg-accent w-full">
+              <Search className="h-4 w-4" />
+              <span>Search</span>
+            </Button>
 
-        <Button variant="ghost" className="justify-start gap-2 mb-2 text-white hover:bg-zinc-800 w-full">
-          <Highlighter className="h-4 w-4" />
-          Highlights
-        </Button>
+            <div className="mt-8">
+              <h2 className="text-sm font-semibold mb-4 px-2 text-muted-foreground">Library</h2>
+              
+              <Button variant="ghost" className="justify-start gap-2 mb-2 text-foreground hover:bg-accent w-full">
+                <Star className="h-4 w-4" />
+                <span>Favorites</span>
+              </Button>
 
-        <Button variant="ghost" className="justify-start gap-2 mb-2 text-white hover:bg-zinc-800 w-full">
-          <Archive className="h-4 w-4" />
-          Archive
-        </Button>
+              <Button variant="ghost" className="justify-start gap-2 mb-2 text-foreground hover:bg-accent w-full">
+                <Highlighter className="h-4 w-4" />
+                <span>Highlights</span>
+              </Button>
 
-        <Button variant="ghost" className="justify-start gap-2 mb-2 text-white hover:bg-zinc-800 w-full">
-          <Tag className="h-4 w-4" />
-          Tags
-        </Button>
-      </div>
+              <Button variant="ghost" className="justify-start gap-2 mb-2 text-foreground hover:bg-accent w-full">
+                <Archive className="h-4 w-4" />
+                <span>Archive</span>
+              </Button>
 
-      <div className="mt-auto">
-        <div className="border-t border-zinc-800 pt-4">
-          <div className="bg-zinc-800 rounded-lg p-4">
+              <Button variant="ghost" className="justify-start gap-2 mb-2 text-foreground hover:bg-accent w-full">
+                <Tag className="h-4 w-4" />
+                <span>Tags</span>
+              </Button>
+            </div>
+          </div>
+        </SidebarContent>
+
+        <SidebarFooter className="border-t p-4">
+          <div className="bg-accent/50 rounded-lg p-4">
             <h3 className="font-semibold mb-2">Get your reading superpowers</h3>
-            <p className="text-sm text-zinc-400 mb-4">Read better with Matter Premium</p>
-            <Button variant="outline" className="w-full text-white border-zinc-700 hover:bg-zinc-700">
+            <p className="text-sm text-muted-foreground mb-4">Read better with Matter Premium</p>
+            <Button variant="outline" className="w-full">
               Go Premium →
             </Button>
           </div>
-        </div>
-      </div>
-    </div>
+        </SidebarFooter>
+      </ShadcnSidebar>
+      <SidebarRail />
+    </>
   );
 };
