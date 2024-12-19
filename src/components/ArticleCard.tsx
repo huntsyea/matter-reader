@@ -1,8 +1,10 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FileText } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface ArticleCardProps {
+  id: string;
   title: string;
   source: string;
   author?: string;
@@ -11,9 +13,14 @@ interface ArticleCardProps {
   type?: string;
 }
 
-export const ArticleCard = ({ title, source, author, date, imageUrl, type }: ArticleCardProps) => {
+export const ArticleCard = ({ id, title, source, author, date, imageUrl, type }: ArticleCardProps) => {
+  const navigate = useNavigate();
+
   return (
-    <div className="flex items-start gap-3 sm:gap-4 py-4 border-b border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 px-3 sm:px-4 cursor-pointer transition-colors">
+    <div 
+      onClick={() => navigate(`/article/${id}`)}
+      className="flex items-start gap-3 sm:gap-4 py-4 border-b border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 px-3 sm:px-4 cursor-pointer transition-colors"
+    >
       {type === "document" ? (
         <div className="w-8 h-8 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center text-emerald-600 dark:text-emerald-400 flex-shrink-0">
           <FileText className="w-4 h-4" />

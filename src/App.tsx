@@ -5,11 +5,11 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { createClient } from "@supabase/supabase-js";
 import { SessionContextProvider } from "@supabase/auth-helpers-react";
 import { supabase } from "@/integrations/supabase/client";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
+import ArticleDetail from "./pages/ArticleDetail";
 import { useEffect, useState } from "react";
 
 const queryClient = new QueryClient();
@@ -56,6 +56,14 @@ const App = () => (
                   element={
                     <ProtectedRoute>
                       <Index />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/article/:id"
+                  element={
+                    <ProtectedRoute>
+                      <ArticleDetail />
                     </ProtectedRoute>
                   }
                 />
