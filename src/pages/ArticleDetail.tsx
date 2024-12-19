@@ -26,6 +26,16 @@ const ArticleDetail = () => {
     },
   });
 
+  // Function to extract the first image from content if no main image
+  const extractFirstImage = (content: string) => {
+    const imgRegex = /<img[^>]+src="([^">]+)"/;
+    const match = content?.match(imgRegex);
+    return match ? match[1] : null;
+  };
+
+  // Get the header image (main image or first content image)
+  const headerImage = article?.image_url || (article?.content ? extractFirstImage(article.content) : null);
+
   if (isLoading) {
     return (
       <div className="flex h-screen bg-background w-full">
@@ -68,13 +78,43 @@ const ArticleDetail = () => {
           </div>
         </div>
         <div className="overflow-auto bg-[#FCFCFC] dark:bg-zinc-900 min-h-full">
+          <div className={`relative w-full ${headerImage ? 'h-[60vh]' : 'h-[40vh]'} mb-12`}>
+            {headerImage ? (
+              <>
+                <img 
+                  src={headerImage} 
+                  alt={article.title}
+                  className="w-full h-full object-cover"
+                />
+                <div 
+                  className="absolute inset-0 bg-gradient-to-t from-[#1A1F2C] via-[#1A1F2C]/70 to-transparent"
+                  style={{ mixBlendMode: 'multiply' }}
+                />
+              </>
+            ) : (
+              <div className="w-full h-full bg-gradient-to-br from-[#403E43] to-[#1A1F2C]" />
+            )}
+            <div className="absolute bottom-0 left-0 right-0 p-8 sm:p-12 max-w-3xl mx-auto text-white">
+              <h1 className="font-serif text-4xl sm:text-5xl font-bold mb-4 leading-tight">
+                {article?.title}
+              </h1>
+              <div className="flex flex-wrap items-center gap-x-3 text-sm sm:text-base text-zinc-200">
+                {article?.author && <span>{article.author}</span>}
+                {article?.source && <span>• {article.source}</span>}
+                {article?.published_date && (
+                  <span>• {new Date(article.published_date).toLocaleDateString()}</span>
+                )}
+              </div>
+            </div>
+          </div>
+
           <article className="prose dark:prose-invert lg:prose-lg 
             prose-img:rounded-lg 
             prose-headings:font-serif 
             prose-p:font-sans 
             prose-p:leading-relaxed 
             prose-headings:leading-tight 
-            max-w-3xl mx-auto px-6 py-12 
+            max-w-3xl mx-auto px-6 pb-12 
             prose-a:text-blue-600 
             dark:prose-a:text-blue-400 
             prose-img:mx-auto 
@@ -143,21 +183,6 @@ const ArticleDetail = () => {
             prose-abbr:border-b
             prose-abbr:border-dotted
             prose-abbr:cursor-help">
-            {article?.image_url && (
-              <img 
-                src={article.image_url} 
-                alt={article.title} 
-                className="w-full aspect-[2/1] object-cover rounded-lg mb-8 shadow-sm"
-              />
-            )}
-            <h1 className="mb-2 font-serif text-[#222222] dark:text-white !mt-0">{article?.title}</h1>
-            <div className="flex items-center gap-2 text-sm text-[#8E9196] dark:text-zinc-400 mb-8 !mt-0">
-              {article?.author && <span>{article.author}</span>}
-              {article?.source && <span>• {article.source}</span>}
-              {article?.published_date && (
-                <span>• {new Date(article.published_date).toLocaleDateString()}</span>
-              )}
-            </div>
             <div 
               className="article-content prose-headings:text-[#222222] dark:prose-headings:text-white prose-p:text-[#333333] dark:prose-p:text-zinc-300 prose-li:text-[#333333] dark:prose-li:text-zinc-300 prose-strong:text-[#222222] dark:prose-strong:text-white prose-blockquote:text-[#444444] dark:prose-blockquote:text-zinc-300 prose-blockquote:border-l-[#8E9196] dark:prose-blockquote:border-l-zinc-700 prose-code:text-[#222222] dark:prose-code:text-white prose-pre:bg-[#F1F0FB] dark:prose-pre:bg-zinc-800 prose-hr:border-[#C8C8C9] dark:prose-hr:border-zinc-700"
               dangerouslySetInnerHTML={{ __html: article?.content || '' }}
