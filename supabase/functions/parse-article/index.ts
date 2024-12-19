@@ -41,7 +41,7 @@ serve(async (req) => {
     const imageUrl = doc.querySelector('meta[property="og:image"]')?.getAttribute('content') || 
                     null
 
-    // Enhanced content extraction
+    // Enhanced content extraction with preserved strong tags
     const possibleContentSelectors = [
       'article',
       '[role="article"]',
@@ -104,6 +104,14 @@ serve(async (req) => {
           return node.textContent;
         }
         
+        if (node.tagName === 'STRONG' || node.tagName === 'B') {
+          console.log('Processing strong/b tag:', node.textContent);
+          const innerContent = Array.from(node.childNodes)
+            .map(child => processNode(child))
+            .join('');
+          return `<strong>${innerContent}</strong>`;
+        }
+
         // Common blog elements to preserve
         const preservedElements = [
           'P', 'STRONG', 'EM', 'B', 'I', 'U', 'MARK', 'SUP', 'SUB', 'SMALL', 'DEL', 'INS',
