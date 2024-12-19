@@ -1,131 +1,68 @@
-import {
-  Sidebar as ShadcnSidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarRail,
-} from "@/components/ui/sidebar"
 import { Home, InboxIcon, Search, Star, Highlighter, Archive, Tag, BookMarked } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export const Sidebar = () => {
   return (
-    <>
-      <ShadcnSidebar>
-        <SidebarHeader className="p-4">
-          <div className="flex items-center gap-2">
-            <BookMarked className="h-8 w-8 text-white" />
-          </div>
-        </SidebarHeader>
+    <div className="w-64 bg-zinc-900 text-white p-4 flex flex-col min-h-screen">
+      <div className="flex items-center gap-2 mb-8">
+        <BookMarked className="h-8 w-8" />
+      </div>
+      
+      <Button variant="ghost" className="justify-start gap-2 mb-2 text-white hover:bg-zinc-800 w-full">
+        <Home className="h-4 w-4" />
+        Home
+      </Button>
+      
+      <Button variant="ghost" className="justify-start gap-2 mb-2 text-white hover:bg-zinc-800 w-full">
+        <BookMarked className="h-4 w-4" />
+        Queue
+      </Button>
+      
+      <Button variant="ghost" className="justify-start gap-2 mb-2 text-white hover:bg-zinc-800 w-full">
+        <InboxIcon className="h-4 w-4" />
+        Inbox
+      </Button>
+
+      <Button variant="ghost" className="justify-start gap-2 mb-2 text-white hover:bg-zinc-800 w-full">
+        <Search className="h-4 w-4" />
+        Search
+      </Button>
+
+      <div className="mt-8">
+        <h2 className="text-sm font-semibold mb-4 px-2 text-zinc-400">Library</h2>
         
-        <SidebarContent>
-          <SidebarGroup>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                <SidebarMenuItem>
-                  <SidebarMenuButton asChild>
-                    <Button variant="ghost" className="justify-start gap-2 mb-2 text-white hover:bg-zinc-800 w-full">
-                      <Home className="h-4 w-4" />
-                      <span>Home</span>
-                    </Button>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
+        <Button variant="ghost" className="justify-start gap-2 mb-2 text-white hover:bg-zinc-800 w-full">
+          <Star className="h-4 w-4" />
+          Favorites
+        </Button>
 
-                <SidebarMenuItem>
-                  <SidebarMenuButton asChild>
-                    <Button variant="ghost" className="justify-start gap-2 mb-2 text-white hover:bg-zinc-800 w-full">
-                      <BookMarked className="h-4 w-4" />
-                      <span>Queue</span>
-                    </Button>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
+        <Button variant="ghost" className="justify-start gap-2 mb-2 text-white hover:bg-zinc-800 w-full">
+          <Highlighter className="h-4 w-4" />
+          Highlights
+        </Button>
 
-                <SidebarMenuItem>
-                  <SidebarMenuButton asChild>
-                    <Button variant="ghost" className="justify-start gap-2 mb-2 text-white hover:bg-zinc-800 w-full">
-                      <InboxIcon className="h-4 w-4" />
-                      <span>Inbox</span>
-                    </Button>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
+        <Button variant="ghost" className="justify-start gap-2 mb-2 text-white hover:bg-zinc-800 w-full">
+          <Archive className="h-4 w-4" />
+          Archive
+        </Button>
 
-                <SidebarMenuItem>
-                  <SidebarMenuButton asChild>
-                    <Button variant="ghost" className="justify-start gap-2 mb-2 text-white hover:bg-zinc-800 w-full">
-                      <Search className="h-4 w-4" />
-                      <span>Search</span>
-                    </Button>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
+        <Button variant="ghost" className="justify-start gap-2 mb-2 text-white hover:bg-zinc-800 w-full">
+          <Tag className="h-4 w-4" />
+          Tags
+        </Button>
+      </div>
 
-          <SidebarGroup>
-            <SidebarGroupLabel className="px-2 text-sm font-semibold text-zinc-400">
-              Library
-            </SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                <SidebarMenuItem>
-                  <SidebarMenuButton asChild>
-                    <Button variant="ghost" className="justify-start gap-2 mb-2 text-white hover:bg-zinc-800 w-full">
-                      <Star className="h-4 w-4" />
-                      <span>Favorites</span>
-                    </Button>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-
-                <SidebarMenuItem>
-                  <SidebarMenuButton asChild>
-                    <Button variant="ghost" className="justify-start gap-2 mb-2 text-white hover:bg-zinc-800 w-full">
-                      <Highlighter className="h-4 w-4" />
-                      <span>Highlights</span>
-                    </Button>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-
-                <SidebarMenuItem>
-                  <SidebarMenuButton asChild>
-                    <Button variant="ghost" className="justify-start gap-2 mb-2 text-white hover:bg-zinc-800 w-full">
-                      <Archive className="h-4 w-4" />
-                      <span>Archive</span>
-                    </Button>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-
-                <SidebarMenuItem>
-                  <SidebarMenuButton asChild>
-                    <Button variant="ghost" className="justify-start gap-2 mb-2 text-white hover:bg-zinc-800 w-full">
-                      <Tag className="h-4 w-4" />
-                      <span>Tags</span>
-                    </Button>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-        </SidebarContent>
-
-        <SidebarFooter className="p-4">
-          <div className="border-t border-zinc-800 pt-4">
-            <div className="bg-zinc-800 rounded-lg p-4">
-              <h3 className="font-semibold mb-2 text-white">Get your reading superpowers</h3>
-              <p className="text-sm text-zinc-400 mb-4">Read better with Matter Premium</p>
-              <Button variant="outline" className="w-full text-white border-zinc-700 hover:bg-zinc-700">
-                Go Premium →
-              </Button>
-            </div>
+      <div className="mt-auto">
+        <div className="border-t border-zinc-800 pt-4">
+          <div className="bg-zinc-800 rounded-lg p-4">
+            <h3 className="font-semibold mb-2">Get your reading superpowers</h3>
+            <p className="text-sm text-zinc-400 mb-4">Read better with Matter Premium</p>
+            <Button variant="outline" className="w-full text-white border-zinc-700 hover:bg-zinc-700">
+              Go Premium →
+            </Button>
           </div>
-        </SidebarFooter>
-      </ShadcnSidebar>
-      <SidebarRail />
-    </>
+        </div>
+      </div>
+    </div>
   );
 };
