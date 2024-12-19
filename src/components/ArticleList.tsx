@@ -1,44 +1,69 @@
+import { useEffect, useState } from "react";
 import { ArticleCard } from "./ArticleCard";
-
-const MOCK_ARTICLES = [
-  {
-    title: "OpenAI debuts GPT-4o 'omni' model n...",
-    source: "TechCrunch",
-    author: "John Gruber",
-    date: "May 13",
-    imageUrl: "https://techcrunch.com/wp-content/uploads/2019/03/openai-1.png"
-  },
-  {
-    title: "HBRs 10 Must Reads 2024 The Definiti...",
-    source: "PDF",
-    date: "2023",
-    type: "document"
-  },
-  {
-    title: "The Second Mountain",
-    source: "optimize.me",
-    author: "About the author",
-    date: "2022"
-  },
-  {
-    title: "The Gary Halbert Letter",
-    source: "thegaryhalbert.com",
-    date: "2005"
-  },
-  {
-    title: "The Nothingness of Money",
-    author: "Lawrence Yeo",
-    source: "More To That",
-    date: "2021"
-  }
-];
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/components/ui/use-toast";
 
 export const ArticleList = () => {
+  const [articles, setArticles] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const { toast } = useToast();
+
+  useEffect(() => {
+    const fetchArticles = async () => {
+      try {
+        console.log("Fetching articles...");
+        const { data, error } = await supabase
+          .from('articles')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+
+        console.log("Fetched articles:", data);
+        setArticles(data);
+      } catch (error) {
+        console.error("Error fetching articles:", error);
+        toast({
+          title: "Error loading articles",
+          description: "There was an error loading your articles. Please try again.",
+          variant: "destructive",
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchArticles();
+  }, [toast]);
+
+  if (isLoading) {
+    return (
+      <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 py-8">
+        <div className="space-y-4">
+          {[...Array(3)].map((_, i) => (
+            <div
+              key={i}
+              className="h-24 bg-zinc-100 dark:bg-zinc-800 animate-pulse rounded-lg"
+            />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full max-w-4xl mx-auto px-4 sm:px-6">
-      {MOCK_ARTICLES.map((article, index) => (
-        <ArticleCard key={index} {...article} />
-      ))}
+      {articles.length === 0 ? (
+        <div className="text-center py-12">
+          <p className="text-zinc-500 dark:text-zinc-400">
+            No articles yet. Add your first article using the + button above.
+          </p>
+        </div>
+      ) : (
+        articles.map((article) => (
+          <ArticleCard key={article.id} {...article} />
+        ))
+      )}
     </div>
   );
 };

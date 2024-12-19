@@ -1,8 +1,9 @@
 import { Sidebar } from "@/components/Sidebar";
 import { ArticleList } from "@/components/ArticleList";
 import { Button } from "@/components/ui/button";
-import { Plus, Filter, ChevronDown } from "lucide-react";
+import { Filter, ChevronDown } from "lucide-react";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import { AddArticleDialog } from "@/components/AddArticleDialog";
 
 const Index = () => {
   return (
@@ -28,9 +29,7 @@ const Index = () => {
               <Button variant="ghost" className="text-sm sm:flex-none flex-1">
                 Filter <Filter className="ml-1 h-4 w-4" />
               </Button>
-              <Button size="icon" className="sm:flex-none flex-1 sm:flex-initial">
-                <Plus className="h-4 w-4" />
-              </Button>
+              <AddArticleDialog />
             </div>
           </div>
         </div>
