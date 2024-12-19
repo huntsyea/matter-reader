@@ -61,6 +61,7 @@ export default {
       fontFamily: {
         sans: ["Inter", "sans-serif"],
         serif: ["Merriweather", "serif"],
+        newsreader: ["Newsreader", "serif"],
       },
       borderRadius: {
         lg: "var(--radius)",
