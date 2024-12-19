@@ -1,6 +1,4 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
-import { JSDOM } from "https://esm.sh/jsdom@22.1.0"
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -22,37 +20,40 @@ serve(async (req) => {
     const html = await response.text()
     console.log('Fetched HTML content')
 
-    // Parse the HTML using JSDOM
-    const dom = new JSDOM(html)
-    const document = dom.window.document
+    // Parse the HTML using DOMParser
+    const parser = new DOMParser()
+    const doc = parser.parseFromString(html, 'text/html')
 
     // Extract metadata
-    const title = document.querySelector('meta[property="og:title"]')?.getAttribute('content') || 
-                 document.querySelector('title')?.textContent || 
+    const title = doc.querySelector('meta[property="og:title"]')?.getAttribute('content') || 
+                 doc.querySelector('title')?.textContent || 
                  'Untitled'
 
-    const author = document.querySelector('meta[name="author"]')?.getAttribute('content') || 
-                  document.querySelector('meta[property="article:author"]')?.getAttribute('content') || 
+    const author = doc.querySelector('meta[name="author"]')?.getAttribute('content') || 
+                  doc.querySelector('meta[property="article:author"]')?.getAttribute('content') || 
                   null
 
-    const publishedDate = document.querySelector('meta[property="article:published_time"]')?.getAttribute('content') || 
+    const publishedDate = doc.querySelector('meta[property="article:published_time"]')?.getAttribute('content') || 
                          null
 
     const source = new URL(url).hostname
 
-    const imageUrl = document.querySelector('meta[property="og:image"]')?.getAttribute('content') || 
+    const imageUrl = doc.querySelector('meta[property="og:image"]')?.getAttribute('content') || 
                     null
 
     // Extract main content (this is a simple implementation)
-    const articleElement = document.querySelector('article') || 
-                         document.querySelector('.article-content') || 
-                         document.querySelector('.post-content') ||
-                         document.querySelector('main')
+    const articleElement = doc.querySelector('article') || 
+                         doc.querySelector('.article-content') || 
+                         doc.querySelector('.post-content') ||
+                         doc.querySelector('main')
 
     let content = ''
     if (articleElement) {
       // Remove script tags and other unwanted elements
-      articleElement.querySelectorAll('script, style, nav, header, footer').forEach(el => el.remove())
+      const scripts = articleElement.getElementsByTagName('script')
+      for (const script of scripts) {
+        script.remove()
+      }
       content = articleElement.textContent?.trim() || ''
     }
 
