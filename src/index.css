@@ -26,6 +26,9 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 221.2 83.2% 53.3%;
     --radius: 0.5rem;
+    --reader-background: 0 0% 98.8%;
+    --reader-text: 0 0% 20%;
+    --reader-muted: 220 3% 57%;
   }
 
   .dark {
@@ -48,6 +51,9 @@
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
     --ring: 240 4.9% 83.9%;
+    --reader-background: 240 10% 3.9%;
+    --reader-text: 0 0% 98%;
+    --reader-muted: 240 5% 64.9%;
   }
 }
 
@@ -59,4 +65,45 @@
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
+}
+
+/* Additional styles for the reader view */
+.article-content {
+  font-feature-settings: "liga" 1, "kern" 1;
+}
+
+.article-content p {
+  hanging-punctuation: first;
+}
+
+.article-content img {
+  display: block;
+  margin: 2rem auto;
+  max-width: 100%;
+  height: auto;
+}
+
+.article-content pre {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+}
+
+.article-content blockquote {
+  font-style: italic;
+  margin: 2rem 0;
+  padding-left: 1.5rem;
+  border-left-width: 4px;
+}
+
+.article-content h2, 
+.article-content h3, 
+.article-content h4 {
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.article-content hr {
+  margin: 3rem 0;
 }
