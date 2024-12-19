@@ -1,20 +1,26 @@
 .article-content {
   font-family: 'Newsreader', serif;
   font-weight: 400;
-  font-feature-settings: "liga" 1, "kern" 1;
+  font-feature-settings: "liga" 1, "kern" 1, "onum" 1;
+  letter-spacing: -0.003em;
+  word-spacing: 0.05em;
 }
 
 .article-content p {
   hanging-punctuation: first;
-  line-height: 1.8;
-  margin-bottom: 1.5rem;
+  line-height: 1.75;
+  margin-bottom: 1.8rem;
+  max-width: 70ch;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .article-content img {
   display: block;
-  margin: 2rem auto;
+  margin: 2.5rem auto;
   max-width: 100%;
   height: auto;
+  border-radius: 0.5rem;
 }
 
 .article-content pre {
@@ -22,13 +28,17 @@
   padding: 1.5rem;
   border-radius: 0.5rem;
   overflow-x: auto;
+  font-size: 0.95em;
+  line-height: 1.6;
 }
 
 .article-content blockquote {
   font-style: italic;
-  margin: 2rem 0;
+  margin: 2.5rem 0;
   padding-left: 1.5rem;
   border-left-width: 4px;
+  font-size: 1.1em;
+  line-height: 1.7;
 }
 
 .article-content h1 {
@@ -72,22 +82,27 @@
 
 .article-content hr {
   margin: 3rem 0;
+  width: 40%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .article-content ul {
   list-style-type: disc;
   margin-left: 1.5rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.8rem;
+  line-height: 1.7;
 }
 
 .article-content ol {
   list-style-type: decimal;
   margin-left: 1.5rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.8rem;
+  line-height: 1.7;
 }
 
 .article-content li {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.7rem;
   padding-left: 0.5rem;
 }
 
@@ -120,6 +135,8 @@
   font-size: 0.875rem;
   color: hsl(var(--muted-foreground));
   text-align: center;
+  margin-top: -1rem;
+  font-style: italic;
 }
 
 .article-content kbd {
@@ -127,4 +144,47 @@
   padding: 0.2em 0.4em;
   border-radius: 0.25rem;
   font-family: 'Courier New', Courier, monospace;
+  font-size: 0.9em;
+}
+
+/* Add styles for better text selection visibility */
+.article-content ::selection {
+  background: rgba(var(--primary), 0.1);
+  color: hsl(var(--reader-text));
+}
+
+/* Improve table readability */
+.article-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2rem 0;
+  font-size: 0.95em;
+}
+
+.article-content th,
+.article-content td {
+  padding: 0.75rem;
+  border: 1px solid hsl(var(--border));
+  text-align: left;
+}
+
+.article-content th {
+  background-color: hsl(var(--muted));
+  font-weight: 600;
+}
+
+/* Add styles for definition lists if used in content */
+.article-content dl {
+  margin: 2rem 0;
+}
+
+.article-content dt {
+  font-weight: 600;
+  margin-top: 1rem;
+}
+
+.article-content dd {
+  margin-left: 2rem;
+  margin-bottom: 1rem;
+  line-height: 1.7;
 }
