@@ -28,18 +28,18 @@ const ArticleDetail = () => {
 
   if (isLoading) {
     return (
-      <div className="flex h-screen bg-background">
+      <div className="flex h-screen bg-background w-full">
         <Sidebar />
-        <div className="flex-1 flex flex-col">
-          <header className="border-b w-full">
+        <div className="flex-1">
+          <div className="border-b">
             <div className="flex h-14 items-center gap-4 px-6">
               <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
                 <ArrowLeft className="h-4 w-4" />
               </Button>
               <h1 className="text-xl font-semibold">Article</h1>
             </div>
-          </header>
-          <div className="flex-1 overflow-auto">
+          </div>
+          <div className="overflow-auto">
             <div className="animate-pulse space-y-4 p-6 max-w-4xl mx-auto">
               <div className="h-8 w-3/4 bg-zinc-100 dark:bg-zinc-800 rounded"></div>
               <div className="h-4 w-1/4 bg-zinc-100 dark:bg-zinc-800 rounded"></div>
@@ -56,18 +56,18 @@ const ArticleDetail = () => {
   }
 
   return (
-    <div className="flex h-screen bg-background">
+    <div className="flex h-screen bg-background w-full">
       <Sidebar />
-      <div className="flex-1 flex flex-col">
-        <header className="border-b w-full">
+      <div className="flex-1">
+        <div className="border-b">
           <div className="flex h-14 items-center gap-4 px-6">
             <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
               <ArrowLeft className="h-4 w-4" />
             </Button>
             <h1 className="text-xl font-semibold">Article</h1>
           </div>
-        </header>
-        <div className="flex-1 overflow-auto">
+        </div>
+        <div className="overflow-auto">
           <article className="prose dark:prose-invert max-w-4xl mx-auto p-6">
             {article?.image_url && (
               <img 
