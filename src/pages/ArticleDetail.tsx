@@ -68,7 +68,7 @@ const ArticleDetail = () => {
           </div>
         </div>
         <div className="overflow-auto bg-[#FCFCFC] dark:bg-zinc-900 min-h-full">
-          <article className="prose dark:prose-invert lg:prose-lg prose-img:rounded-lg prose-headings:font-serif prose-p:font-sans prose-p:leading-relaxed prose-headings:leading-tight max-w-3xl mx-auto px-6 py-12 prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-img:mx-auto prose-img:max-h-[70vh] prose-img:w-auto">
+          <article className="prose dark:prose-invert lg:prose-lg prose-img:rounded-lg prose-headings:font-serif prose-p:font-sans prose-p:leading-relaxed prose-headings:leading-tight max-w-3xl mx-auto px-6 py-12 prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-img:mx-auto prose-img:max-h-[70vh] prose-img:w-auto prose-a:no-underline prose-a:border-b prose-a:border-dotted prose-a:border-blue-600/50 dark:prose-a:border-blue-400/50 hover:prose-a:border-blue-600 dark:hover:prose-a:border-blue-400">
             {article?.image_url && (
               <img 
                 src={article.image_url} 
