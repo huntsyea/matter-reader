@@ -105,3 +105,11 @@
 .article-content a:hover {
   background-size: 4px 2px;
 }
+
+.article-content strong,
+.article-content b {
+  font-family: 'Newsreader', serif;
+  font-weight: 600;
+  color: hsl(var(--reader-text));
+  letter-spacing: -0.01em;
+}
