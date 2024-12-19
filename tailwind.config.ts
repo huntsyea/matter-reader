@@ -62,6 +62,7 @@ export default {
         sans: ["Inter", "sans-serif"],
         serif: ["Merriweather", "serif"],
         newsreader: ["Newsreader", "serif"],
+        'open-sans': ["Open Sans", "sans-serif"],
       },
       borderRadius: {
         lg: "var(--radius)",
