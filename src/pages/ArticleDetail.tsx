@@ -30,8 +30,16 @@ const ArticleDetail = () => {
     return (
       <div className="flex min-h-screen bg-background">
         <Sidebar />
-        <main className="flex-1 overflow-auto p-6">
-          <div className="animate-pulse space-y-4">
+        <main className="flex-1 overflow-auto">
+          <div className="border-b">
+            <div className="flex h-14 items-center gap-4 px-6">
+              <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
+                <ArrowLeft className="h-4 w-4" />
+              </Button>
+              <h1 className="text-xl font-semibold">Article</h1>
+            </div>
+          </div>
+          <div className="animate-pulse space-y-4 p-6">
             <div className="h-8 w-3/4 bg-zinc-100 dark:bg-zinc-800 rounded"></div>
             <div className="h-4 w-1/4 bg-zinc-100 dark:bg-zinc-800 rounded"></div>
             <div className="space-y-2">
@@ -50,7 +58,7 @@ const ArticleDetail = () => {
       <Sidebar />
       <main className="flex-1 overflow-auto">
         <div className="border-b">
-          <div className="flex items-center gap-4 p-4">
+          <div className="flex h-14 items-center gap-4 px-6">
             <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
               <ArrowLeft className="h-4 w-4" />
             </Button>
