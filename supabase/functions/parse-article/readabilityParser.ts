@@ -1,5 +1,5 @@
 import { Readability } from "@mozilla/readability";
-import { DOMParser } from "https://deno.land/x/deno_dom@v0.1.38/deno-dom-wasm.ts";
+import { DOMParser } from "deno-dom";
 
 export interface ParsedArticle {
   title: string;
